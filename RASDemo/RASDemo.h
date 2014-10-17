@@ -1,6 +1,7 @@
 // Functions in MotorDemo
 void initMotors(void); 
 void motorDemo(void);
+void motorStop(void);
 
 // Functions in ServoDemo
 void initServo(void);
