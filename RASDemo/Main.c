@@ -10,7 +10,7 @@ int main(void){
 	initMotors();
 	InitializeSystemTime();
 	Wait(10); // Motor off time
-	motorDemo();
+	Forward();
 	t1 = GetTime();
 	t2 = GetTime();
 /*	while( (t2-t1)<2){
