@@ -2,6 +2,12 @@
 void initMotors(void); 
 void motorDemo(void);
 void motorStop(void);
+void Forward(void);
+void Backward(void);
+void swivelLeft(void);
+void swivelRight(void);
+void rotateLeft(void);
+void rotateRight(void);
 
 // Functions in ServoDemo
 void initServo(void);
