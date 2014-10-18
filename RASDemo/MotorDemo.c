@@ -30,13 +30,38 @@ void initMotors(void) {
     SetMotor(rightMotor, 0);
 }
 
-void motorDemo(void) {
-		
-    SetMotor(leftMotor,1);
-		SetMotor(rightMotor,1);
-}
 
 void motorStop(void){
 		SetMotor(leftMotor,0);
 		SetMotor(rightMotor,0);
+}
+
+void Forward(void){
+	SetMotor(leftMotor,1);
+	SetMotor(rightMotor,1);
+}
+
+void Backward(void){
+	SetMotor(leftMotor,-1);
+	SetMotor(rightMotor,-1);
+}
+
+void swivelRight(void){
+	SetMotor(leftMotor,1);
+	SetMotor(rightMotor,0);
+}
+
+void swivelLeft(void){
+	SetMotor(leftMotor,0);
+	SetMotor(rightMotor,1);
+}
+
+void rotateRight(void){
+	SetMotor(leftMotor,1);
+	SetMotor(rightMotor,-1);
+}
+
+void rotateLeft(void){
+	SetMotor(leftMotor,-1);
+	SetMotor(rightMotor,1);
 }
