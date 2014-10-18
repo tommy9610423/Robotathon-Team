@@ -23,6 +23,33 @@ void initI2CLineSensor(void) {
     ls = InitializeI2CLineSensor(bus, 0);
 }
 
+//pos is the position of the sensor that you want to read. pos goes from 0 ~ 7
+float SensorRead (int pos){
+	float line[8];
+	LineSensorReadArray(ls, line);
+	return line[pos];
+}
+
+void LineFollow (void){ //assuming anything bigger is white and lesser is black
+	float left = SensorRead(1); //change pos according to design
+	float right = SensorRead(2); //change pos according to design
+	
+	//ADD: stop motors before movement change??
+	if ((left >= threshhold)&&(right >= threshhold)){ //both white
+		Forward();
+	}
+	else if ((left >= threshhold)&&(right < threshhold)){ //left white, right black
+		swivelRight();
+	}
+	else if ((left < threshhold)&&(right >= threshhold)){ //left black, right white
+		swivelLeft();
+	}
+	else if ((left < threshhold)&&(right < threshhold)){ //both black
+		//doubleblack is finish??????
+	}
+}
+
+
 void i2cLineSensorDemo(void) {
     Printf("Press any key to quit\n");
  
