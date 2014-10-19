@@ -3,6 +3,8 @@
 #include <RASLib/inc/common.h>
 #include <RASLib/inc/linesensor.h>
 
+#define threshhold 50
+
 static tLineSensor *ls;
 static tBoolean initialized = false;
 
