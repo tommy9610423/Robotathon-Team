@@ -20,9 +20,9 @@ void i2cLineSensorDemo(void);
 // Function in IRDemo
 void initIRSensor(void);
 void IRSensorDemo(void);
-void readRight(void);
-void readLeft(void);
-void readFront(void);
+float readRight(void);
+float readLeft(void);
+float readFront(void);
 
 // Functions in EncoderDemo
 void initEncoders(void);
