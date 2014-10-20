@@ -58,6 +58,11 @@ float cmdist = (( 21618  /  ( input * 3379 -216)) >> 10);
     return cmdist;
     
 }
+
+
+void wallFollow(void){
+
+}
 /*
 void IRSensorDemo(void) {
     Printf("Press any key to quit\n");
