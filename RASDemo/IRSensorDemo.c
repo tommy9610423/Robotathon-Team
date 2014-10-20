@@ -13,9 +13,9 @@ static tBoolean initialized = false;
                 
                input /4095 * 3.3 = 21.1x + .21111
                
-            21.1111 /  ( input / 4096 * 3.3 - .2111 )  = distance
+            21.1111 /  ( input  * 3.3 - .2111 )  = distance
             
-                  ( 21618  /  ( input / 4  * 3379 -216)) >> 10 = distance
+                  ( 21618  /  ( input * 3379 -216)) >> 10 = distance
                
                
                
@@ -40,19 +40,22 @@ void initIRSensor(void) {
 }
 
 
-void readRight(void){
-ADCRead(adc[2]);
-
-    
+float readRight(void){
+float input = ADCRead(adc[2]);
+float cmdist = (( 21618  /  ( input * 3379 -216)) >> 10);
+    return cmdist;
 }
 
-void readLeft(void){
-ADCRead(adc[0]);
-    
+float readLeft(void){
+float input = ADCRead(adc[0]);
+float cmdist = (( 21618  /  ( input * 3379 -216)) >> 10);
+    return cmdist;
 }
 
-void readFront(void){
-ADCRead(adc[1]);
+float readFront(void){
+float input = ADCRead(adc[1]);
+float cmdist = (( 21618  /  ( input * 3379 -216)) >> 10);
+    return cmdist;
     
 }
 /*
