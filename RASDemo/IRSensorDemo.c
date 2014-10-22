@@ -63,7 +63,7 @@ float cmdist = (( 21618  /  ( input * 3379 -216)) >> 10);
 }
 
 
-void wallFollow(void){
+void wallFollow(char x[], float dist){
 
 }
 /*
