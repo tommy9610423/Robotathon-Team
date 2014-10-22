@@ -5,17 +5,26 @@
 #include <RASLib/inc/time.h>
 #include <RASLib/inc/motor.h>
 
-int main(void){
-	float t1; float t2; float t3; float t4;
+#define NoWall 1000  // wall read functions return value 1000 if there is no wall or wall is out of range
+bool isLine; // indicates whether there is line or not
+
+int main(void){ float right; float left; float front;
 	initMotors();
 	InitializeSystemTime();
-	Wait(10); // Motor off time
-	Forward();
-	t1 = GetTime();
-	t2 = GetTime();
-/*	while( (t2-t1)<2){
-		t2 = GetTime();
-	}*/
-	Wait(4); // Motor on time
-	motorStop();
+	isLine = false;
+	while(1){
+		right = readRight();
+		left = readLeft();
+		front = readFront();
+	// insert linefollow code
+	if(right != NoWall || left != NoWall || front != NoWall){
+		wallFollow();
+	}
+		
+		
+		
+		
+	}
+	
+	
 }
