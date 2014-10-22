@@ -42,18 +42,21 @@ void initIRSensor(void) {
 
 float readRight(void){
 float input = ADCRead(adc[2]);
+if(input < .15){return 1000;} // .15 = 15% of 3.3V = approx. out of bounds distance (80cm)
 float cmdist = (( 21618  /  ( input * 3379 -216)) >> 10);
     return cmdist;
 }
 
 float readLeft(void){
 float input = ADCRead(adc[0]);
+if(input < .15){return 1000;} // .15 = 15% of 3.3V = approx. out of bounds distance (80cm)
 float cmdist = (( 21618  /  ( input * 3379 -216)) >> 10);
     return cmdist;
 }
 
 float readFront(void){
 float input = ADCRead(adc[1]);
+if(input < .15){return 1000;} // .15 = 15% of 3.3V = approx. out of bounds distance (80cm)
 float cmdist = (( 21618  /  ( input * 3379 -216)) >> 10);
     return cmdist;
     
