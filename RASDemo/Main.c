@@ -27,7 +27,7 @@ int main(void){ float right; float left; float front;
 		else if (right == NoWall && left != NoWall){
 			wallFollow(l);
 		}
-		
+	motorStop();	
 		
 		
 		
