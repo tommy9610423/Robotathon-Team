@@ -9,14 +9,17 @@ static tBoolean initialized = false;
 // function : y = 21.1x + .211111 .  y = output. x = inverted distance (cm)
 /*
                 y = 21618x + 216;
-                y>>10;
-                
-               input * 3.3 = 21.1x + .21111
-               
+                y>>10;             
+               input * 3.3 = 21.1x + .21111       
             21.1111 /  ( input  * 3.3 - .2111 )  = distance
-            
                   ( 21618  /  ( input * 3379 -216)) >> 10 = distance
-           */     
+
+Option 2: 2 linear functions, one from distance 10-20cm, the other from distance 20-60cm (no offset)
+10-20cm , 1.3+ V  : distance = -10.2 * input voltage + 33.6.  distance = (-2611*input + 8627) >> 8
+20cm-40cm, [.75V,1.3V) : distance = -54.8 * input voltage + 85.6. distance = (-56013*input + 87654) >> 10;
+40cm-60cm, [.5V,.75V) : distance = -100 * input voltage + 110.
+alternate for 2nd (accurate from 20cm-40cm) : distance = -36.5 * input V + 65.2. distance = (-37376*input + 66765) >> 10.
+*/     
 
 
 void initIRSensor(void) {
@@ -35,36 +38,76 @@ void initIRSensor(void) {
 }
 
 
-float readRight(void){
+int readRight(void){int cmdist;
     float input = ADCRead(adc[2]);
-    if(input < .15){return 1000;} // .15 = 15% of 3.3V = approx. out of bounds distance (80cm)
-    float cmdist = (( 21618  /  ( input * 3379 -216)) >> 10);
-    cmdist -= 10; // if sensors are placed 10cm inward, offset 10cm
-    return cmdist;
+		input *= 3.3;
+		if(input >= 1.3){//10-20cm , 1.3+ V  : distance = -10.2 * input voltage + 33.6.  distance = (-2611*input + 8627) >> 8
+			cmdist = (int)(-2611*input + 8627);
+			cmdist = cmdist >> 8;
+			if(cmdist<10){return 0;}
+			return cmdist-10; // offset 
+		}
+			else if(input >=.75 && input<1.3){//20cm-40cm, [.75V,1.3V) : distance = -54.8 * input voltage + 85.6. distance = (-56013*input + 87654) >> 10;
+				cmdist = (int)(-56013*input + 87654);
+				cmdist = cmdist >> 10;
+				return cmdist-10;
+			}
+			else if(input>=.5 && input<.75){//40cm-60cm, [.5V,.75V) : distance = -100 * input voltage + 110.
+				cmdist = (int)(-100* input + 110);
+				return cmdist-10;
+			}
+			else {return 1000;} // input < .5 (too distant)
+			
 }
 
-float readLeft(void){
+int readLeft(void){int cmdist;
     float input = ADCRead(adc[0]);
-    if(input < .15){return 1000;} // .15 = 15% of 3.3V = approx. out of bounds distance (80cm)
-    float cmdist = (( 21618  /  ( input * 3379 -216)) >> 10);
-    cmdist -= 10; // if sensors are placed 10cm inward, offset 10cm
-    return cmdist;
+    input *= 3.3;
+		if(input >= 1.1){//10-20cm , 1.3+ V  : distance = -10.2 * input voltage + 33.6.  distance = (-2611*input + 8627) >> 8
+			cmdist = (int)(-2611*input + 8627);
+			cmdist = cmdist >> 8;
+			if(cmdist<10){return 0;}
+			return cmdist-10; // offset 
+		}
+			else if(input >=.6 && input<1.1){//20cm-40cm, [.75V,1.3V) : distance = -54.8 * input voltage + 85.6. distance = (-56013*input + 87654) >> 10;
+				cmdist = (int)(-56013*input + 87654);
+				cmdist = cmdist >> 10;
+				return cmdist-10;
+			}
+			else if(input>=.5 && input<.6){//40cm-60cm, [.5V,.75V) : distance = -100 * input voltage + 110.
+				cmdist = (int)(-100* input + 110);
+				return cmdist-10;
+			}
+			else {return 1000;} // input < .5 (too distant)
 }
 
-float readFront(void){
+int readFront(void){int cmdist;
     float input = ADCRead(adc[1]);
-    if(input < .15){return 1000;} // .15 = 15% of 3.3V = approx. out of bounds distance (80cm)
-    float cmdist = (( 21618  /  ( input * 3379 -216)) >> 10);
-    cmdist -= 10; // if sensors are placed 10cm inward, offset 10cm
-    return cmdist;
+    input *= 3.3;
+	if(input >= 1.3){//10-20cm , 1.3+ V  : distance = -10.2 * input voltage + 33.6.  distance = (-2611*input + 8627) >> 8
+		cmdist = (int)(-2611*input + 8627);
+		cmdist = cmdist >> 8;
+		if(cmdist<10){return 0;}
+	`	     return cmdist-10; // offset 
+		}
+		else if(input >=.75 && input<1.3){//20cm-40cm, [.75V,1.3V) : distance = -54.8 * input voltage + 85.6. distance = (-56013*input + 87654) >> 10;
+			cmdist = (int)(-56013*input + 87654);
+			cmdist = cmdist >> 10;
+			return cmdist-10;
+			}
+		else if(input>=.5 && input<.75){//40cm-60cm, [.5V,.75V) : distance = -100 * input voltage + 110.
+			cmdist = (int)(-100* input + 110);
+			return cmdist-10;
+		}
+		else {return 1000;} // input < .5 (too distant)
     
 }
 
 
-void wallFollow(char x[], float dist){
+void wallFollow(char x[], int dist){
     if(x[0] == 'r'){
+				Forward();
         while(readRight()!= 1000 && readFront() >=15){ // and while no line is detected
-            current = readRight();
             if(readRight()-dist >=2){ // drifted to the left
                 swivelRight();
                 while(readRight()-dist >=2){}
@@ -76,7 +119,7 @@ void wallFollow(char x[], float dist){
                 while(dist-readRight() >=2){}
                 Forward();
             }
-                                                
+            motorStop();                                    
         }
         
                                 // insert 90 degree left turn later
@@ -92,6 +135,7 @@ void wallFollow(char x[], float dist){
     }
                 
         else if(x[0] == 'l'){
+						Forward();
             while(readLeft() != 1000 && readFront()>=15){ // and while no line is detected
                 if(readLeft()-dist >=2){ // drifted to the left
                     swivelRight();
@@ -104,6 +148,7 @@ void wallFollow(char x[], float dist){
                     while(dist-readRight() >=2){}
                     Forward();
                 }
+								motorStop();
             }
              /* if(line detected){return;}
             if(readFront() <= 15){
