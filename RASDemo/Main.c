@@ -11,27 +11,27 @@ bool RobotLeft; // indicator for when robot is detected on left
 bool RobotRight; // indicator for when robot is detected on Right
 char r[1] = {'r'};
 char l[1] = {'l'};
-int main(void){ float right; float left; float front;
+int main(void){ int right; int left; int front;
 	initMotors();
 	InitializeSystemTime();
-	isLine = false;
+	initIRSensor();
+
 	while(1){
-		right = readRight();
+		right = readRight();//readRight();
 		left = readLeft();
 		front = readFront();
 	// insert linefollow code
 	// later version will account for robot detection
-	if(right != NoWall && left == NoWall){
-		wallFollow(r);
+	if(right < left && right > 0){
+		wallFollow(r,right);
 	}
-		else if (right == NoWall && left != NoWall){
-			wallFollow(l);
+		else if (left < right && left > 0){
+			wallFollow(l,left);
 		}
-	motorStop();	
+	//motorStop();	
 		
 		
 		
 	}
 	
-	
-}
+}	
