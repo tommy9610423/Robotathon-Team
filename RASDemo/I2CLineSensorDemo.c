@@ -32,21 +32,24 @@ float SensorRead (int pos){
 	return line[pos];
 }
 
+#define threshold 1
 void LineFollow (void){ //assuming anything bigger is white and lesser is black
-	float left = SensorRead(1); //change pos according to design
-	float right = SensorRead(2); //change pos according to design
+	float left = SensorRead(0); //change pos according to design
+	float right = SensorRead(1); //change pos according to design
 	
 	//ADD: stop motors before movement change??
-	if ((left >= threshhold)&&(right >= threshhold)){ //both white
+	if ((left <= threshold)&&(right <= threshold)){ //both white
 		Forward();
+		return;
 	}
-	else if ((left >= threshhold)&&(right < threshhold)){ //left white, right black
-		swivelRight();
+	else if ((left <= threshold && left>=0)&&(!(right <= threshold && right>=0))){ //left white, right black
+		rotateLeft();
 	}
-	else if ((left < threshhold)&&(right >= threshhold)){ //left black, right white
-		swivelLeft();
+	else if ((!(left <= threshold && left>=0))&&(right <= threshold && right>=0)){ //left black, right white
+		rotateRight();
 	}
-	else if ((left < threshhold)&&(right < threshhold)){ //both black
+	else if (((!(left <= threshold && left>=0))&&(!(right <= threshold && right>=0)))){ //both black
+		Forward();
 		//doubleblack is finish??????
 	}
 }
