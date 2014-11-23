@@ -23,7 +23,7 @@ void IRSensorDemo(void);
 float readRight(void);
 float readLeft(void);
 float readFront(void);
-void wallFollow(char x[], float dist);
+void wallFollow(void);
 
 // Functions in EncoderDemo
 void initEncoders(void);
