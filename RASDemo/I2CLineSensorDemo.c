@@ -20,7 +20,7 @@ void initI2CLineSensor(void) {
  //   bus = InitializeI2C(PIN_B3, PIN_B2);
     
     // intialize a line sensor to be on the I2C bus at address 0
-    ls = InitializeGPIOLineSensor(PIN_B3,PIN_B2, PIN_B0, PIN_B4, PIN_B5, PIN_B6, PIN_A3, PIN_B1);
+    ls = InitializeGPIOLineSensor(PIN_E1,PIN_E0, PIN_E3, PIN_B4, PIN_B5, PIN_D0, PIN_D1, PIN_E2);
 }
 
 float SensorRead (int pos){
