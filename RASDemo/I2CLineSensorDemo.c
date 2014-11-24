@@ -3,8 +3,6 @@
 #include <RASLib/inc/common.h>
 #include <RASLib/inc/linesensor.h>
 
-#define threshhold 50
-
 static tLineSensor *ls;
 static tBoolean initialized = false;
 
@@ -19,19 +17,17 @@ void initI2CLineSensor(void) {
     initialized = true;
 
     // initialize an I2C bus with a couple of pins
-    bus = InitializeI2C(PIN_B3, PIN_B2);
+ //   bus = InitializeI2C(PIN_B3, PIN_B2);
     
     // intialize a line sensor to be on the I2C bus at address 0
-    ls = InitializeI2CLineSensor(bus, 0);
+    ls = InitializeGPIOLineSensor(PIN_B3,PIN_B2, PIN_B0, PIN_B4, PIN_B5, PIN_B6, PIN_A3, PIN_B1);
 }
 
-//pos is the position of the sensor that you want to read. pos goes from 0 ~ 7
 float SensorRead (int pos){
 	float line[8];
 	LineSensorReadArray(ls, line);
 	return line[pos];
 }
-
 #define threshold 1
 void LineFollow (void){ //assuming anything bigger is white and lesser is black
 	float left = SensorRead(0); //change pos according to design
@@ -53,8 +49,6 @@ void LineFollow (void){ //assuming anything bigger is white and lesser is black
 		//doubleblack is finish??????
 	}
 }
-
-
 void i2cLineSensorDemo(void) {
     Printf("Press any key to quit\n");
  
@@ -76,4 +70,6 @@ void i2cLineSensorDemo(void) {
   
     Printf("\n"); 
 }
+
+
 
